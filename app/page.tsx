@@ -9,17 +9,13 @@ export default function Home() {
     console.log("ono");
   }
 
-  useEffect(() => {
-    if (window.ethereum) {
-      
-    } else {
-      console.log("install an ethereum Wallet");
-    }
-  })
+  if (!(window.ethereum)) {
+    return (<div>install an ethereum wallet</div>);
+  }
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center p-24">
-      <div className="m-2 relative flex place-items-center">
+    <main className="flex h-screen border-2 border-red-600 flex-col justify-center items-center p-4">
+      <div className="m-2 relative flex items-center">
         <form onSubmit={(e : React.FormEvent<HTMLFormElement>) => handleClick(e)}>
           <label htmlFor="tollId">Toll ID</label>
           <input className="m-2 p-2 border border-blue-300 rounded-xl" type='text' name='tollId' />
