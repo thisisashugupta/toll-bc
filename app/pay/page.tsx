@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PayTollFee from './PayTollFee'
 import { useNetwork } from 'wagmi'
 import { readContract } from '@wagmi/core'
@@ -25,11 +25,11 @@ const Pay : React.FC = () => {
         console.log(`hash: ${hash}`);
     }
 
-    React.useEffect(() => {
-        if (chain.name === "Sepolia") setConnected(true);
+    useEffect(() => {
+        if (chain?.name === "Sepolia") setConnected(true);
     })
 
-    React.useEffect(() => {
+    useEffect(() => {
 
         async function getTollFee() { // contract function call to sample contract
             const data : bigint = await readContract({
