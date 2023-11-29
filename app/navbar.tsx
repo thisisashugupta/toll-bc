@@ -8,7 +8,7 @@ export default function Navbar() {
   const { address, connector, isConnected } = useAccount();
 
   return (
-    <div className="fixed top-0 z-10 w-full flex items-center justify-between max-w-5xl font-mono text-sm px-4 py-4">
+    <div className="fixed top-0 z-10 border-b-2 border-black w-full flex items-center justify-between max-w-5xl font-mono text-sm px-4 py-4">
       <Link
         href="/"
         className="flex static w-auto rounded-xl bg-gray-200 p-3 dark:bg-zinc-800/30"

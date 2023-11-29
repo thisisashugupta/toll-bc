@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <WalletProvider>
-          <main className="flex w-screen h-screen flex-col items-center px-24 py-20">
+          <main className="flex flex-col w-screen h-screen items-center px-24 py-20">
             <Navbar />
             {children}
           </main>

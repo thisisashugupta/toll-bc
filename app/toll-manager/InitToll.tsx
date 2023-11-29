@@ -42,7 +42,6 @@ function InitToll() {
                 title: 'Success',
                 description: 'Transaction submited successfully',
                 status: 'success',
-                duration: 9000,
                 isClosable: true,
             });
         }
@@ -61,22 +60,23 @@ function InitToll() {
                 title: 'Error',
                 description: 'There was an error',
                 status: 'error',
-                duration: 9000,
                 isClosable: true,
             });
         }
     };
 
   return (<>
-    <div className='space-x-4 space-y-2 border border-blue-500 p-4 rounded'>
+    <div className='flex flex-col items-center justify-center space-x-4 space-y-2 border border-blue-500 p-4 rounded-xl'>
         <div>Init_Toll</div>
-        <label htmlFor="tollid">tollid</label>
-        <input type="text" name="tollid" placeholder='tollid' onChange={e => setTollId(e.target.value)}/>
-        <br />
-        <label htmlFor="tollname">tollname</label>
-        <input type="text" name="tollname" placeholder='tollname' onChange={e => setTollName(e.target.value)}/>
-        <br />
-        <button className='bg-blue-500 p-2 rounded' onClick={handleSubmit}>create toll</button> 
+        <div className='flex items-center justify-between space-x-4 rounded-xl'>
+            <label htmlFor="tollid">tollid</label>
+            <input className='border border-blue-300 rounded-xl p-2' type="text" name="tollid" placeholder='1' onChange={e => setTollId(e.target.value)}/>
+        </div>
+        <div className='flex items-center justify-between space-x-4 rounded-xl'>
+            <label htmlFor="tollname">tollname</label>
+            <input className='border border-blue-300 rounded-xl p-2' type="text" name="tollname" placeholder='toll1' onChange={e => setTollName(e.target.value)}/>
+        </div>
+        <button className='bg-blue-300 p-2 rounded-xl' onClick={handleSubmit}>create toll</button> 
     </div>
     </>
   )
@@ -85,8 +85,5 @@ function InitToll() {
 export default InitToll;
 
 /*
-    function Init_Toll(string memory _name,string memory _id) onlyOwner public {
-        Toll memory toll_obj = Toll(_id,_name,block.timestamp);
-        Toll_list.push(toll_obj);
-    }
+    function Init_Toll(string memory _name,string memory _id) onlyOwner public {}
 */

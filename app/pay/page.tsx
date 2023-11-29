@@ -1,69 +1,69 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import {NextUIProvider} from "@nextui-org/react"
+import { useAccount } from 'wagmi'
 import PayTollFee from './PayTollFee'
-import { useNetwork } from 'wagmi'
-import { readContract } from '@wagmi/core'
-import { sendTransaction, prepareSendTransaction } from '@wagmi/core'
-import { parseEther } from 'viem'
-import { tollABI, tollContractAddr } from '../../contracts/ABI'
+import PayTolltax from './PayTolltax'
+import CheckBalance from './CheckBalance'
+import ChargeBalance from './ChargeBalance'
+import RegisterVehicle from './RegisterVehicle'
 
 const Pay : React.FC = () => {
 
-    const [tollFeeETH, setTollFeeETH] = React.useState<number>(0);
-    const [isReady, setIsReady] = React.useState<boolean>(false);
-    const [connected, setConnected] = React.useState<boolean>(false);
-    const { chain, chains } = useNetwork()
+    const { address, isConnected, isDisconnected } = useAccount();
 
-    const justSendEth = async () => {
-        const config = await prepareSendTransaction({
-            //   account: '0x0c093868DAC0514B99e4d4CfB0880ee5Fa5A711B', // from account
-              to: '0x3e05a78FCc3185ADaCFd8f5C071119B031CeC962',
-              value: parseEther('0.01')
-        });
-        const { hash } = await sendTransaction(config);
-        console.log(`hash: ${hash}`);
-    }
+    const [showCheckBalance, setShowCheckBalance] = useState<boolean>(false);
+    const [showChargeBalance, setShowChargeBalance] = useState<boolean>(false);
+    const [showRegisterVehicle, setShowRegisterVehicle] = useState<boolean>(false);
+    const [showPayTollTax, setShowPayTollTax] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (chain?.name === "Sepolia") setConnected(true);
-    })
+    const toggleShowCheckBalanceState = () => {
+        setShowChargeBalance(false);
+        setShowRegisterVehicle(false);
+        setShowPayTollTax(false);
+        setShowCheckBalance(!showCheckBalance);
+    };
+    const toggleShowChargeBalanceState = () => {
+        setShowCheckBalance(false);
+        setShowRegisterVehicle(false);
+        setShowPayTollTax(false);
+        setShowChargeBalance(!showChargeBalance);
+    };
+    const toggleShowRegisterVehicleState = () => {
+        setShowCheckBalance(false);
+        setShowChargeBalance(false);
+        setShowPayTollTax(false);
+        setShowRegisterVehicle(!showRegisterVehicle);
+    };
+    const toggleShowPayTollTaxState = () => {
+        setShowCheckBalance(false);
+        setShowChargeBalance(false);
+        setShowRegisterVehicle(false);
+        setShowPayTollTax(!showPayTollTax);
+    };
 
-    useEffect(() => {
-
-        async function getTollFee() { // contract function call to sample contract
-            const data : bigint = await readContract({
-                address: tollContractAddr,
-                abi: tollABI,
-                functionName: 'fee',
-            });
-            setTollFeeETH(Number(data / 10n**9n)/10**9);
-            setIsReady(true);
-        }
-        connected && getTollFee();
-
-    },[connected])
-
-    if (!(window.ethereum)) {
-        return (
-        <main className="flex h-screen w-screen flex-col items-center p-24">
-            <div>install an ethereum wallet</div>
-        </main>
-        )
-    }
+    
+  if (isDisconnected) {
+    return (<div>Connect to Sepolia wallet</div>);
+  }
 
     return (
-        <main className="flex h-screen w-screen flex-col items-center p-24">
-            {!connected && (<div>Please connect to Sepolia</div>)}
-            {connected && (<div>
-                {!isReady && <>Loading...</>}
-                {isReady && 
-                (<div className="m-2 relative flex place-items-center flex-col">
-                    <div><p>Toll Fee: {`${tollFeeETH}`} ETH</p></div>
-                    <div><PayTollFee /></div>
-                </div>)}
-            </div>)}
+        <NextUIProvider>
+        <main className="flex flex-col flex-wrap w-screen items-center py-12 space-y-4">
+            <div className='flex justify-center items-center space-x-4'>
+                <button className='border border-blue-300 hover:bg-blue-300 rounded-xl p-2' onClick={toggleShowCheckBalanceState}>CheckBalance</button>
+                <button className='border border-blue-300 hover:bg-blue-300 rounded-xl p-2' onClick={toggleShowChargeBalanceState}>ChargeBalance</button>
+                <button className='border border-blue-300 hover:bg-blue-300 rounded-xl p-2' onClick={toggleShowRegisterVehicleState}>RegisterVehicle</button>
+                <button className='border border-blue-300 hover:bg-blue-300 rounded-xl p-2' onClick={toggleShowPayTollTaxState}>PayTollTax</button>                
+            </div>
+            {/* <PayTollFee /> */}
+            { showCheckBalance && <CheckBalance /> }
+            { showChargeBalance && <ChargeBalance /> }
+            { showRegisterVehicle && <RegisterVehicle /> }
+            { showPayTollTax && <PayTolltax /> }
         </main>
+        </NextUIProvider>
     )
 }
 

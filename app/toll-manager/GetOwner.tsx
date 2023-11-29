@@ -16,9 +16,10 @@ function GetOwner() {
     console.log(data);
 
   return (<>
-    <div className='space-x-4 space-y-2 border border-blue-500 p-4 rounded'>
+    <div className='flex flex-col items-center justify-center space-x-4 space-y-2 border border-blue-500 p-4 rounded-xl'>
         <div>get_owner</div>
-        <div>{`${data}`}</div>
+        <div>Owner Address:</div>
+        <div> {`${data}`}</div>
     </div>
     </>
   )
