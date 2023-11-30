@@ -22,7 +22,8 @@ export default function Home() {
     // const completeUrl = // `${process.env.NEXT_PUBLIC_BASE_URL}/toll-manager/pay?address=${address}&tollid=${tollId}&tollname=${tollName}&vehnum=${vehnum}&vehtype=${vehtype}&vehmodel=${vehmodel}`;
     const encoded_tollName = encodeURIComponent(tollName);
     const encoded_vehmodel = encodeURIComponent(vehmodel);
-    let encoded_url = `${process.env.NEXT_PUBLIC_BASE_URL}/toll-manager/pay?address=${address}&tollid=${tollId}&tollname=${encoded_tollName}&vehnum=${vehnum}&vehtype=${vehtype}&vehmodel=${encoded_vehmodel}`;
+    // let encoded_url = `${process.env.NEXT_PUBLIC_BASE_URL}/toll-manager/pay?address=${address}&tollid=${tollId}&tollname=${encoded_tollName}&vehnum=${vehnum}&vehtype=${vehtype}&vehmodel=${encoded_vehmodel}`;
+    let encoded_url = `${process.env.NEXT_PUBLIC_BASE_URL}/toll-manager/pay?address=${address}&vehnum=${vehnum}&vehtype=${vehtype}&vehmodel=${encoded_vehmodel}`;
     setUrl(encoded_url);
     setQrGenerated(true);
     console.log(encoded_url , encoded_tollName , encoded_vehmodel);
@@ -54,14 +55,14 @@ export default function Home() {
         
       <form className='flex-col justify-around space-y-4' onSubmit={(e : React.FormEvent<HTMLFormElement>) => handleClick(e)}>
           <div>Enter vehicle details to generate QR for Toll Payment</div>
-          <div className='flex items-center justify-between space-x-4'>
+          {/* <div className='flex items-center justify-between space-x-4'>
             <label htmlFor="tollid">tollid</label>
             <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='tollid' placeholder='13' onChange={ (e) => setTollId(e.target.value)}/>
           </div>
           <div className='flex items-center justify-between space-x-4'>
             <label htmlFor="tollname">tollname</label>
             <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='tollname' placeholder='toll13' onChange={ (e) => setTollName(e.target.value)}/>
-          </div>
+          </div> */}
           <div className='flex items-center justify-between space-x-4'>
             <label htmlFor="vehnum">vehnum</label>
             <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='vehnum' placeholder='RJ14CA5995' onChange={ (e) => setVehnum(e.target.value)}/>
