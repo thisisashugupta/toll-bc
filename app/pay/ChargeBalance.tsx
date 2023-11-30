@@ -10,6 +10,7 @@ import { tollPlazaABI, tollPlazaContractAddr } from '../../contracts/ABI'
 const ChargeBalance : React.FC = () => {
 
     const [valueEther, setValueEther] = useState<string>("0");
+    const [successMessage, setSuccessMessage] = useState<string>("");
 
     const { config, isError, error } = usePrepareContractWrite({
         address: tollPlazaContractAddr,
@@ -35,6 +36,7 @@ const ChargeBalance : React.FC = () => {
     useEffect(() => {
         if (writeSuccess) {
             console.log('Returned Data', data);
+            setSuccessMessage("Balance Added Successfully!");
             console.log({
                 title: 'Success',
                 description: 'Transaction submited successfully',
@@ -90,6 +92,7 @@ const ChargeBalance : React.FC = () => {
                             </div>
                         </form>
                     </div>
+                    <div>{successMessage}</div>
                 </div>)}
             </div>)}
         </main>

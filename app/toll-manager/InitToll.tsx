@@ -9,6 +9,7 @@ function InitToll() {
     const [args, setArgs] = useState<[string, string]>(["",""]);
     const [tollName, setTollName] = useState<string>("");
     const [tollId, setTollId] = useState<string>("");
+    const [successMessage, setSuccessMessage] = useState<string>("");
 
     useEffect(() => {
         setArgs([tollName, tollId]);
@@ -38,6 +39,7 @@ function InitToll() {
     useEffect(() => {
         if (writeSuccess) {
             console.log('Returned Data', data);
+            setSuccessMessage("Toll Booth Registered Successfully!");
             console.log({
                 title: 'Success',
                 description: 'Transaction submited successfully',
@@ -77,6 +79,7 @@ function InitToll() {
             <input className='border border-blue-300 rounded-xl p-2' type="text" name="tollname" placeholder='toll1' onChange={e => setTollName(e.target.value)}/>
         </div>
         <button className='bg-blue-300 p-2 rounded-xl' onClick={handleSubmit}>create toll</button> 
+        <div>{successMessage}</div>
     </div>
     </>
   )

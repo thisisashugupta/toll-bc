@@ -23,6 +23,7 @@ const PayTollTax : React.FC = () => {
     const [vehnum, setVehnum] = useState<string>(searchParams.get('vehnum'));
     const [vehtype, setVehtype] = useState<string>(searchParams.get('vehtype'));
     const [vehmodel, setVehmodel] = useState<string>(searchParams.get('vehmodel'));
+    const [successMessage, setSuccessMessage] = useState<string>("");
 
     useEffect(() => {
         setArgs([payerAddress, tollId, tollName, vehnum, vehtype, vehmodel]);
@@ -52,6 +53,7 @@ const PayTollTax : React.FC = () => {
     useEffect(() => {
         if (writeSuccess) {
             console.log('Returned Data', data);
+            setSuccessMessage("TollTax Paid Successfully!");
             console.log({
                 title: 'Success',
                 description: 'Transaction submited successfully',
@@ -128,6 +130,7 @@ const PayTollTax : React.FC = () => {
                             </div>
                         </form>
                     </div>
+                    <div>{successMessage}</div>
                 </div>)}
             </div>)}
         </main>
