@@ -51,7 +51,7 @@ const CheckBalance : React.FC = () => {
     }, [chain?.name]);
 
     return (
-        <main className='flex-col items-center p-12 border border-blue-500 rounded-lg'>
+        <main className='flex-col items-center p-4 border border-blue-500 rounded-lg'>
             {!connected && (<div>Please connect to Sepolia</div>)}
             {connected && (<div>
                 {!isReady && <>Loading...</>}

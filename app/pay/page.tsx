@@ -44,14 +44,15 @@ const Pay : React.FC = () => {
     };
 
     
-  if (isDisconnected) {
+  if (!isConnected) {
     return (<div>Connect to Sepolia wallet</div>);
   }
 
     return (
         <NextUIProvider>
         <main className="flex flex-col flex-wrap w-screen items-center py-12 space-y-4">
-            <div className='flex justify-center items-center space-x-4'>
+        {/* <div className='flex flex-wrap justify-center items-center space-x-4'> */}
+        <div className='grid grid-cols-2 justify-center items-center'>
                 <button className='border border-blue-300 hover:bg-blue-300 rounded-xl p-2' onClick={toggleShowCheckBalanceState}>CheckBalance</button>
                 <button className='border border-blue-300 hover:bg-blue-300 rounded-xl p-2' onClick={toggleShowChargeBalanceState}>ChargeBalance</button>
                 <button className='border border-blue-300 hover:bg-blue-300 rounded-xl p-2' onClick={toggleShowRegisterVehicleState}>RegisterVehicle</button>

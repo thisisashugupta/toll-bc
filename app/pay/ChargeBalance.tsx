@@ -72,7 +72,7 @@ const ChargeBalance : React.FC = () => {
     }, [chain?.name]);
 
     return (
-        <main className='flex-col items-center p-12 border border-blue-500 rounded-lg'>
+        <main className='flex-col items-center p-4 border border-blue-500 rounded-lg'>
             {!connected && (<div>Please connect to Sepolia</div>)}
             {connected && (<div>
                 {!isReady && <>Loading...</>}
@@ -83,7 +83,7 @@ const ChargeBalance : React.FC = () => {
                         <form className='flex-col justify-around space-y-4' onSubmit={ (e: any) => handleSubmit(e)}>
                             <div className='flex items-center justify-between space-x-4'>
                             <label htmlFor="valueEther">valueEther</label>
-                            <input className='border border-blue-400 rounded-lg p-2' type="text" name='valueEther' placeholder='0.00058' onChange={ (e) => setValueEther(e.target.value)}/>
+                            <input className='border border-blue-400 rounded-lg p-2 text-black' type="number" min="0" step="0.00000001" name='valueEther' placeholder='0.00058' onChange={ (e) => setValueEther(e.target.value)}/>
                             </div>
                             <div className='flex items-center justify-center space-x-4'>
                             <button className='border border-blue-400 hover:bg-blue-400 rounded-lg p-2' type='submit'>Charge_balance</button>

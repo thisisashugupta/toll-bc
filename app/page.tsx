@@ -9,17 +9,28 @@ import QRCode from 'qrcode';
 export default function Home() {
 
   const { address, isConnected, isConnecting, isDisconnected, connector: activeConnector } = useAccount();
-  // const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
-
-  const [id, setId] = useState<string>("");
+  const [tollId, setTollId] = useState<string>("");
+  const [tollName, setTollName] = useState<string>("");
+  const [vehnum, setVehnum] = useState<string>("");
+  const [vehtype, setVehtype] = useState<string>("");
+  const [vehmodel, setVehmodel] = useState<string>("");
   const [src, setSrc] = useState<string>("");
+  const [url, setUrl] = useState<string>("#");
+  const [qrGenerated, setQrGenerated] = useState<boolean>(false);
 
   const generate = () => {
-    QRCode.toDataURL(`http://localhost:3000/${address}`).then(setSrc);
+    // const completeUrl = // `${process.env.NEXT_PUBLIC_BASE_URL}/toll-manager/pay?address=${address}&tollid=${tollId}&tollname=${tollName}&vehnum=${vehnum}&vehtype=${vehtype}&vehmodel=${vehmodel}`;
+    const encoded_tollName = encodeURIComponent(tollName);
+    const encoded_vehmodel = encodeURIComponent(vehmodel);
+    let encoded_url = `${process.env.NEXT_PUBLIC_BASE_URL}/toll-manager/pay?address=${address}&tollid=${tollId}&tollname=${encoded_tollName}&vehnum=${vehnum}&vehtype=${vehtype}&vehmodel=${encoded_vehmodel}`;
+    setUrl(encoded_url);
+    setQrGenerated(true);
+    console.log(encoded_url , encoded_tollName , encoded_vehmodel);
+    return QRCode.toDataURL(encoded_url).then(setSrc);
+      //  QRCode.toDataURL('I am a pony!', function (err, url) {
+      //   console.log(url)
+      // })
   }
-  //  QRCode.toDataURL('I am a pony!', function (err, url) {
-  //   console.log(url)
-  // })
 
   function handleClick(e : React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,7 +38,7 @@ export default function Home() {
     console.log("QR generated.");
   }
 
-  if (isDisconnected) {
+  if (!isConnected) {
     return (<div>Connect to Sepolia wallet</div>);
   }
 
@@ -40,18 +51,28 @@ export default function Home() {
       </div>
 
       <div>
-        <form className='flex-col items-center justify-center' onSubmit={(e : React.FormEvent<HTMLFormElement>) => handleClick(e)}>
-          <div className='flex justify-between items-center'>
+        
+      <form className='flex-col justify-around space-y-4' onSubmit={(e : React.FormEvent<HTMLFormElement>) => handleClick(e)}>
+          <div>Enter vehicle details to generate QR for Toll Payment</div>
+          <div className='flex items-center justify-between space-x-4'>
+            <label htmlFor="tollid">tollid</label>
+            <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='tollid' placeholder='13' onChange={ (e) => setTollId(e.target.value)}/>
+          </div>
+          <div className='flex items-center justify-between space-x-4'>
+            <label htmlFor="tollname">tollname</label>
+            <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='tollname' placeholder='toll13' onChange={ (e) => setTollName(e.target.value)}/>
+          </div>
+          <div className='flex items-center justify-between space-x-4'>
             <label htmlFor="vehnum">vehnum</label>
-            <input className="m-2 p-2 border border-blue-300 rounded-xl" type='text' name='vehnum' placeholder='RJ45CD8008' onChange={(e) => setId(e.target.value)} />
+            <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='vehnum' placeholder='RJ14CA5995' onChange={ (e) => setVehnum(e.target.value)}/>
           </div>
-          <div className='flex justify-between items-center'>
+          <div className='flex items-center justify-between space-x-4'>
             <label htmlFor="vehtype">vehtype</label>
-            <input className="m-2 p-2 border border-blue-300 rounded-xl" type='text' name='vehtype' placeholder='car' onChange={(e) => setId(e.target.value)} />
+            <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='vehtype' placeholder='car' onChange={ (e) => setVehtype(e.target.value)}/>
           </div>
-          <div className='flex justify-between items-center'>
+          <div className='flex items-center justify-between space-x-4'>
             <label htmlFor="vehmodel">vehmodel</label>
-            <input className="m-2 p-2 border border-blue-300 rounded-xl" type='text' name='vehmodel' placeholder='Honda City' onChange={(e) => setId(e.target.value)} />
+            <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='vehmodel' placeholder='Honda City' onChange={ (e) => setVehmodel(e.target.value)}/>
           </div>
           <div className='flex justify-center items-center'>
             <button className=" m-2 p-2 bg-blue-300 rounded-xl" type='submit' >Generate QR</button>
@@ -59,9 +80,10 @@ export default function Home() {
         </form>
       </div>
 
-      <div className='flex justify-center items-center'>
-        <Image src={src} alt="qr_code" width={250} height={250}/>
-      </div>
+      { qrGenerated && <div className='flex flex-col justify-center items-center'>
+        <div><Link href={url} target='_blank'><Image src={src} alt="qr_code" width={250} height={250}/></Link></div>
+        <div>click qr to open</div>
+      </div>}
       
     </main>
   )

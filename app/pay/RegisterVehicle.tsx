@@ -79,7 +79,7 @@ const RegisterVehicle : React.FC = () => {
     }, [chain?.name]);
 
     return (
-        <main className='flex-col items-center p-12 border border-blue-500 rounded-lg'>
+        <main className='flex-col items-center p-4 border border-blue-500 rounded-lg'>
             {!connected && (<div>Please connect to Sepolia</div>)}
             {connected && (<div>
                 {!isReady && <>Loading...</>}
@@ -90,13 +90,13 @@ const RegisterVehicle : React.FC = () => {
                         <form className='flex-col justify-around space-y-4' onSubmit={ (e: any) => handleSubmit(e)}>
                             <div className='flex items-center justify-between space-x-4'>
                             <label htmlFor="vehnum">vehnum</label>
-                            <input className='border border-blue-400 rounded-lg p-2' type="text" name='vehnum' placeholder='RJ14CA5995' onChange={ (e) => setVehnum(e.target.value)}/>
+                            <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='vehnum' placeholder='RJ14CA5995' onChange={ (e) => setVehnum(e.target.value)}/>
                             </div>
                             <div className='flex items-center justify-between space-x-4'>
                             <label htmlFor="vehtype">vehtype</label>
                             {/* <div className='border border-blue-400 bg-white rounded-lg py-2 px-24'><VehicleMenu /></div> */}
                             {/* <input className='border border-blue-400 rounded-lg p-2' type="text" name='vehtype' placeholder='car' onChange={ (e) => setVehtype(e.target.value)} /> */}
-                            <select className='border border-blue-400 rounded-lg py-2 px-8' name="vehtype" onChange={ (e) => setVehtype(e.target.value)}>
+                            <select className='border border-blue-400 rounded-lg py-2 px-8 text-black' name="vehtype" onChange={ (e) => setVehtype(e.target.value)}>
                                 <option value="car">Car</option>
                                 <option value="van">Van</option>
                                 <option value="bus">Bus</option>
@@ -104,7 +104,7 @@ const RegisterVehicle : React.FC = () => {
                             </div>
                             <div className='flex items-center justify-between space-x-4'>
                             <label htmlFor="vehmodel">vehmodel</label>
-                            <input className='border border-blue-400 rounded-lg p-2' type="text" name='vehmodel' placeholder='Honda City' onChange={ (e) => setVehmodel(e.target.value)}/>
+                            <input className='border border-blue-400 rounded-lg p-2 text-black' type="text" name='vehmodel' placeholder='Honda City' onChange={ (e) => setVehmodel(e.target.value)}/>
                             </div>
                             <div className='flex items-center justify-center space-x-4'>
                             <button className='border border-blue-400 hover:bg-blue-400 rounded-lg p-2' type='submit'>Register_Vehicle</button>
