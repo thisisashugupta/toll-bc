@@ -19,15 +19,16 @@ contract TollPlaza {
 
     }
 
-    uint car_tollprice   = 100000;
-    uint van_tollprice   = 200000;
-    uint bus_tollprice   = 400000;
+    uint public car_tollprice = 500000000000000;
+    uint public van_tollprice = 1000000000000000;
+    uint public bus_tollprice = 1500000000000000;
 
     address payable public owner;
     mapping (address => vehicle [] ) vehicles;
     mapping (address => uint) account_balance;
     address[] public vehicle_Accts;
     Toll[] public Toll_list;
+    // mapping(uint256 => Toll) public Toll_list;
     mapping (string => Toll []) vehicle_history;
 
 
@@ -41,6 +42,25 @@ contract TollPlaza {
         owner=payable(msg.sender);
     }
 
+
+    function Init_Toll(string memory _name,string memory _id) onlyOwner public {
+
+        Toll memory toll_obj = Toll(_id,_name,block.timestamp);
+        Toll_list.push(toll_obj);
+
+    }
+
+
+    // event TollInitialized(string indexed id, string name, uint256 time);
+
+    // function Init_Toll(string memory _name, string memory _id) onlyOwner public {
+
+    //     Toll memory toll_obj = Toll(_id, _name, block.timestamp);
+    //     Toll_list.push(toll_obj);
+    //     emit TollInitialized(_id, _name, block.timestamp);
+
+    // }
+
     function Register_Vehicle(string memory _vehnum,string memory _vehtype,string memory _vehmodel) public {
 
         vehicles[msg.sender].push(vehicle(_vehnum, _vehtype,_vehmodel));
@@ -48,23 +68,23 @@ contract TollPlaza {
 
     }
 
-    function Charge_balance() payable public{
+    function Charge_balance() payable public {
+
+        uint8 vehicleExists = 0;
 
         for (uint i=0; i<vehicle_Accts.length; i++) {
-            if (msg.sender == vehicle_Accts[i]){
+            if (msg.sender == vehicle_Accts[i]) {
 
                 account_balance[vehicle_Accts[i]] += msg.value;
+                vehicleExists = 1;
                 break;
 
             }
         }
 
-    }
-
-    function Init_Toll(string memory _name,string memory _id) onlyOwner public {
-
-        Toll memory toll_obj = Toll(_id,_name,block.timestamp);
-        Toll_list.push(toll_obj);
+        if (vehicleExists == 0) {
+            revert("vehicle account does not exist for this sender.");
+        }
 
     }
 
@@ -75,59 +95,69 @@ contract TollPlaza {
     }
 
 
-    function Check_ownership(string memory _vehnum,string memory _vehtype,string memory _vehmodel) public view returns(bool){
         
-        bool _check=false;
+    function Check_ownership(string memory _vehnum,string memory _vehtype,string memory _vehmodel) public view returns(bool){
         vehicle[] memory obj=getVehicles(msg.sender);
+
         if (obj.length != 0) {
             for (uint i=0; i<obj.length; i++) {
-                if( ( keccak256(bytes(obj[i].vehicle_number)) == keccak256(bytes(_vehnum)) ) && ( keccak256(bytes(obj[i].vehicle_type)) == keccak256(bytes(_vehtype)) ) && ( keccak256(bytes(obj[i].vehicle_model)) == keccak256(bytes(_vehmodel)) ) ) 
-                    _check=true;
+                if( 
+                    ( keccak256(bytes(obj[i].vehicle_number)) == keccak256(bytes(_vehnum)) ) && 
+                    ( keccak256(bytes(obj[i].vehicle_type)) == keccak256(bytes(_vehtype)) ) && 
+                    ( keccak256(bytes(obj[i].vehicle_model)) == keccak256(bytes(_vehmodel)) ) 
+                ) { return true; }
             }
         }
 
-        return _check;
+        return false;
 
     }
 
+    event TollTaxPaid(address indexed payerAddr, string indexed _id, string indexed _tollname, string _vehnum, string _type, string _vehmodel);
 
-    function Pay_Tolltax(string memory _id,string memory _tollname,string memory _vehnum,string memory _type,string memory _vehmodel) public returns(bool){
 
-        bool _check=false;
+    function Pay_Tolltax (address payerAddr, string memory _id, string memory _tollname, string memory _vehnum, string memory _type, string memory _vehmodel) public returns(bool){
 
-        if (Check_ownership(_vehnum,_type,_vehmodel)){
+        // bool _check=false;
 
-            if ( keccak256(bytes(_type)) == keccak256(bytes("car")) && account_balance[msg.sender] >= car_tollprice){
+        if (Check_ownership(_vehnum,_type,_vehmodel) || (msg.sender == owner)){
+
+            if ( keccak256(bytes(_type)) == keccak256(bytes("car")) && account_balance[payerAddr] >= car_tollprice){
                 
-                account_balance[msg.sender] -= car_tollprice;
-                _check=true;
+                account_balance[payerAddr] -= car_tollprice;
+                // _check=true;
 
             }
-            else if ( keccak256(bytes(_type)) == keccak256(bytes("van")) && account_balance[msg.sender] >= van_tollprice){
+            else if ( keccak256(bytes(_type)) == keccak256(bytes("van")) && account_balance[payerAddr] >= van_tollprice){
                 
-                account_balance[msg.sender] -= van_tollprice;
-                _check=true;     
+                account_balance[payerAddr] -= van_tollprice;
+                // _check=true;
 
             }
-            else if ( keccak256(bytes(_type)) == keccak256(bytes("bus")) && account_balance[msg.sender] >= bus_tollprice){
+            else if ( keccak256(bytes(_type)) == keccak256(bytes("bus")) && account_balance[payerAddr] >= bus_tollprice){
                 
-                account_balance[msg.sender] -= bus_tollprice;
-                _check=true;  
+                account_balance[payerAddr] -= bus_tollprice;
+                // _check=true;  
 
             }
             else {
                 
-                _check=false;
+                return false;
+                // _check=false;
 
             }
 
-            if (_check == true) {
+            // if (_check == true) {
                 vehicle_history[_vehnum].push(Toll(_id,_tollname,block.timestamp));
-            }
+                
+                emit TollTaxPaid(payerAddr, _id, _tollname, _vehnum, _type, _vehmodel);
+                return true;
+            // }
 
         }
 
-        return _check;
+        // return _check;
+        return false;
 
     }
 
