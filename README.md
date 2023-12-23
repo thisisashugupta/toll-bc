@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Blockchain-based Toll Payment System
+
+## Overview
+
+This project implements a decentralized toll payment system using blockchain technology. The system enhances traditional toll collection processes by providing transparency, security, and efficiency through the use of blockchain and QR codes.
+
+## Features
+
+- **Blockchain Integration**: Utilizes a distributed ledger for transparent and tamper-proof toll transactions.
+- **Smart Contracts**: Implements smart contracts for automatic toll deduction and validation.
+- **QR Code Payments**: Users can make toll payments by scanning QR codes at toll booths.
+- **Decentralization**: Reduces the need for centralized toll collection infrastructure, minimizing points of failure.
+- **Secure and Private**: Ensures secure and private transactions using blockchain cryptography.
+
+## How it Works
+
+1. **User Registration**: Users register on the blockchain network to create a digital wallet.
+2. **Wallet Funding**: Users fund their digital wallets with cryptocurrency.
+3. **QR Code Generation**: Toll booths generate unique QR codes for each transaction.
+4. **Payment Process**: Users scan the QR code using a mobile app, triggering an automatic payment through a smart contract.
+5. **Blockchain Confirmation**: The transaction is recorded on the blockchain for transparency and accountability.
+6. **Toll Gate Activation**: Upon successful payment, the toll gate opens automatically.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js
+- Remix IDE
+- Ethereum wallet (Metamask)
+- Ethereum-compatible blockchain network (Sepolia Testnet)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    ```bash
+    git clone https://github.com/yourusername/blockchain-toll-payment.git
+    ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    cd blockchain-toll-payment
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Deploy smart contracts:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```bash
+    truffle migrate
+    ```
 
-## Deploy on Vercel
+  *(you can also deploy smart contracts manually using remix ide)*
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+4. Run the application:
+
+    ```bash
+    npm start
+    npm run dev
+    ```
