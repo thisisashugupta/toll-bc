@@ -1,11 +1,15 @@
 // "use client"
 
 import React, { useState, useEffect } from 'react'
-import { useNetwork, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { parseEther } from 'viem'
+import { 
+    useNetwork, 
+    usePrepareContractWrite, 
+    useContractWrite, 
+    useWaitForTransaction 
+} from 'wagmi'
 import { tollPlazaABI, tollPlazaContractAddr } from '../../contracts/ABI'
-
-// function Charge_balance() payable public {}
+import { Input } from '@/components/ui/input'
 
 const ChargeBalance : React.FC = () => {
 
@@ -85,7 +89,7 @@ const ChargeBalance : React.FC = () => {
                         <form className='flex-col justify-around space-y-4' onSubmit={ (e: any) => handleSubmit(e)}>
                             <div className='flex items-center justify-between space-x-4'>
                             <label htmlFor="valueEther">valueEther</label>
-                            <input className='border border-blue-400 rounded-lg p-2 text-black' type="number" min="0" step="0.00000001" name='valueEther' placeholder='0.00058' onChange={ (e) => setValueEther(e.target.value)}/>
+                            <Input type="number" min="0" step="0.00000001" name='valueEther' placeholder='0.00058' onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setValueEther(e.target.value)}/>
                             </div>
                             <div className='flex items-center justify-center space-x-4'>
                             <button className='border border-blue-400 hover:bg-blue-400 rounded-lg p-2' type='submit'>Charge_balance</button>
@@ -100,3 +104,5 @@ const ChargeBalance : React.FC = () => {
 }
 
 export default ChargeBalance;
+
+// function Charge_balance() payable public {}

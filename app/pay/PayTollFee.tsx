@@ -1,19 +1,14 @@
 // "use client"
 
-import React, { useState, useEffect } from 'react'
-import { useAccount, useNetwork } from 'wagmi'
-import { readContract } from '@wagmi/core'
-import { sendTransaction, prepareSendTransaction } from '@wagmi/core'
+import React, { useEffect } from 'react'
 import { parseEther } from 'viem'
-import { tollABI, tollContractAddr } from '../../contracts/ABI'
+import { readContract, sendTransaction, prepareSendTransaction } from '@wagmi/core'
+import { tollABI, tollContractAddr } from '@/contracts/ABI'
 
 const PayTollFee : React.FC = () => {
 
-    const { address, isConnected, isDisconnected } = useAccount();
-
     const [tollFeeETH, setTollFeeETH] = React.useState<number>(0);
     const [isReady, setIsReady] = React.useState<boolean>(false);
-    const { chain, chains } = useNetwork()
 
     const justSendEth = async () => {
         const config = await prepareSendTransaction({
@@ -36,21 +31,20 @@ const PayTollFee : React.FC = () => {
             setTollFeeETH(Number(data / 10n**9n)/10**9);
             setIsReady(true);
         }
-        isConnected && getTollFee();
+        getTollFee();
 
-    },[isConnected])
+    },[])
 
     return (
-        <main className='flex flex-col items-center p-12 border border-blue-500 rounded-lg mt-2'>
-            {!isConnected && (<div>Please connect to Sepolia</div>)}
-            {isConnected && (<div>
+        <main className='flex flex-col items-center p-12 border border-blue-500 rounded-lg mt-2'>            
+            {<div>
                 {!isReady && <>Loading...</>}
                 {isReady && 
                 (<div className="m-2 relative flex place-items-center flex-col">
                     <div><p>Toll Fee: {`${tollFeeETH}`} ETH</p></div>
                     <div className='border border-blue-400 hover:bg-blue-400 p-2 rounded-lg mt-2'><button>Send ETH</button></div>
                 </div>)}
-            </div>)}
+            </div>}
         </main>
     )
 }

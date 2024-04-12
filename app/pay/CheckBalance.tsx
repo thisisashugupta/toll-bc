@@ -4,21 +4,19 @@ import React, { useState, useEffect } from 'react'
 import { useAccount, useNetwork, useContractRead } from 'wagmi'
 import { tollPlazaABI, tollPlazaContractAddr } from '../../contracts/ABI'
 
-// function check_balance() public view returns(uint){}
-
 const CheckBalance : React.FC = () => {
+    
+    const { address } = useAccount();
 
     const [balanceWei, setBalanceWei] = useState<number>(0);
     const [balanceEther, setBalanceEther] = useState<number>(0);
-
-    const { address } = useAccount();
-
+    
     const { data, isError, error, isLoading } = useContractRead({
         address: tollPlazaContractAddr,
         abi: tollPlazaABI,
         functionName: 'check_balance',
         account: address,
-      })
+    })
     if (isError) { console.error(error) };
 
     useEffect(() => {
@@ -27,9 +25,9 @@ const CheckBalance : React.FC = () => {
         let ethbalance : number = balanceWeiNumber / 1000000000000000000;
         setBalanceEther(ethbalance);
     }, [data])
-
     
-  
+    
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
@@ -38,18 +36,18 @@ const CheckBalance : React.FC = () => {
             console.warn({ title: 'Error'});
         }
     };
-
-
+    
+    
     const [isReady, setIsReady] = useState<boolean>(false);
     const [connected, setConnected] = useState<boolean>(false);
-
+    
     const { chain } = useNetwork()
-
+    
     useEffect(() => {
         if (chain?.name === "Sepolia") setConnected(true);
         setIsReady(true);
     }, [chain?.name]);
-
+    
     return (
         <main className='flex-col items-center p-4 border border-blue-500 rounded-lg'>
             {!connected && (<div>Please connect to Sepolia</div>)}
@@ -68,3 +66,5 @@ const CheckBalance : React.FC = () => {
 }    
 
 export default CheckBalance;
+
+// function check_balance() public view returns(uint){}

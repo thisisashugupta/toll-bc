@@ -3,6 +3,8 @@
 import React from 'react'
 import { useContractRead } from 'wagmi'
 import { tollPlazaABI, tollPlazaContractAddr } from '@/contracts/ABI'
+import { Title } from '@/components/ui/title'
+import Card from '@/components/ui/card'
 
 function GetOwner() {
 
@@ -15,13 +17,12 @@ function GetOwner() {
     if (isError) { console.error(error) };
     console.log(data);
 
-  return (<>
-    <div className='flex flex-col items-center justify-center space-x-4 space-y-2 border border-blue-500 p-4 rounded-xl'>
-        <div>get_owner</div>
+  return (
+    <Card>
+        <Title>get_owner</Title>
         <div>Owner Address:</div>
         <div> {`${data}`}</div>
-    </div>
-    </>
+    </Card>
   )
 }
 

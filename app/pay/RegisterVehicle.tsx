@@ -1,15 +1,13 @@
 // "use client"
 
 import React, { useState, useEffect } from 'react'
-import { useNetwork, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-import VehicleMenu  from './VehicleMenu'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+// import VehicleMenu  from './VehicleMenu'
 import { tollPlazaABI, tollPlazaContractAddr } from '../../contracts/ABI'
 
 const RegisterVehicle : React.FC = () => {
 
-    const { chain, chains } = useNetwork()
     const [isReady, setIsReady] = useState<boolean>(false);
-    const [connected, setConnected] = useState<boolean>(false);
     const [args, setArgs] = useState<[string, string, string]>(["","",""]);
     // Register_Vehicle(_vehnum,_vehtype,_vehmodel)
     const [vehnum, setVehnum] = useState<string>("");
@@ -60,9 +58,7 @@ const RegisterVehicle : React.FC = () => {
         try {
             console.log('Sending Tx')
             console.log(args)
-            if (!!write) {
-                await write?.()
-            }
+            write?.()
         } catch (error) {
             console.warn({
                 title: 'Error',
@@ -74,14 +70,12 @@ const RegisterVehicle : React.FC = () => {
     };
 
     useEffect(() => {
-        if (chain?.name === "Sepolia") setConnected(true);
         setIsReady(true);
-    }, [chain?.name]);
+    }, []);
 
     return (
         <main className='flex-col items-center p-4 border border-blue-500 rounded-lg'>
-            {!connected && (<div>Please connect to Sepolia</div>)}
-            {connected && (<div>
+            <div>
                 {!isReady && <>Loading...</>}
                 {isReady && 
                 (<div className="flex flex-col place-items-center space-y-4">
@@ -113,7 +107,7 @@ const RegisterVehicle : React.FC = () => {
                     </div>
                     <div>{successMessage}</div>
                 </div>)}
-            </div>)}
+            </div>
         </main>
     )
 }
