@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import {NextUIProvider} from "@nextui-org/react"
 import { useAccount } from 'wagmi'
-import PayTollFee from './PayTollFee'
+// import PayTollFee from './PayTollFee'
 import PayTolltax from './PayTolltax'
 import CheckBalance from './CheckBalance'
 import ChargeBalance from './ChargeBalance'

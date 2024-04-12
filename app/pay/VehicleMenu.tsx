@@ -25,7 +25,7 @@ export default function VehicleMenu() {
         disallowEmptySelection
         selectionMode="single"
         selectedKeys={selectedKeys}
-        onSelectionChange={setSelectedKeys}
+        onSelectionChange={setSelectedKeys as () => any}
       >
         <DropdownItem key="car">Car</DropdownItem>
         <DropdownItem key="van">Van</DropdownItem>

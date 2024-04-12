@@ -17,12 +17,12 @@ const PayTollTax : React.FC = () => {
     // console.log(search);
     const [args, setArgs] = useState<[string, string, string, string, string, string]>(["","","","","",""]);
     // Pay_Tolltax( _id, _tollname, _vehnum, _type, _vehmodel)    
-    const [payerAddress, setPayerAddress] = useState<string>(searchParams.get('address'));
-    const [tollId, setTollId] = useState<string>(searchParams.get('tollid'));
-    const [tollName, setTollName] = useState<string>(searchParams.get('tollname'));
-    const [vehnum, setVehnum] = useState<string>(searchParams.get('vehnum'));
-    const [vehtype, setVehtype] = useState<string>(searchParams.get('vehtype'));
-    const [vehmodel, setVehmodel] = useState<string>(searchParams.get('vehmodel'));
+    const [payerAddress, setPayerAddress] = useState<string>(searchParams.get('address') || "");
+    const [tollId, setTollId] = useState<string>(searchParams.get('tollid') || "");
+    const [tollName, setTollName] = useState<string>(searchParams.get('tollname') || "");
+    const [vehnum, setVehnum] = useState<string>(searchParams.get('vehnum') || "");
+    const [vehtype, setVehtype] = useState<string>(searchParams.get('vehtype') || "");
+    const [vehmodel, setVehmodel] = useState<string>(searchParams.get('vehmodel') || "");
     const [successMessage, setSuccessMessage] = useState<string>("");
 
     useEffect(() => {

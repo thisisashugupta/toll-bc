@@ -1,7 +1,7 @@
 // "use client"
 
 import React, { useState, useEffect } from 'react'
-import { useNetwork } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 import { readContract } from '@wagmi/core'
 import { sendTransaction, prepareSendTransaction } from '@wagmi/core'
 import { parseEther } from 'viem'
@@ -9,9 +9,10 @@ import { tollABI, tollContractAddr } from '../../contracts/ABI'
 
 const PayTollFee : React.FC = () => {
 
+    const { address, isConnected, isDisconnected } = useAccount();
+
     const [tollFeeETH, setTollFeeETH] = React.useState<number>(0);
     const [isReady, setIsReady] = React.useState<boolean>(false);
-    const [connected, setConnected] = React.useState<boolean>(false);
     const { chain, chains } = useNetwork()
 
     const justSendEth = async () => {
@@ -25,36 +26,24 @@ const PayTollFee : React.FC = () => {
     }
 
     useEffect(() => {
-        if (chain?.name === "Sepolia") setConnected(true);
-    })
-
-    useEffect(() => {
 
         async function getTollFee() { // contract function call to sample contract
-            const data : bigint = await readContract({
+            const data = await readContract({
                 address: tollContractAddr,
                 abi: tollABI,
                 functionName: 'fee',
-            });
+            }) as bigint;
             setTollFeeETH(Number(data / 10n**9n)/10**9);
             setIsReady(true);
         }
-        connected && getTollFee();
+        isConnected && getTollFee();
 
-    },[connected])
-
-    if (!(window.ethereum)) {
-        return (
-        <main className="flex flex-col w-screen items-center p-24">
-            <div>install an ethereum wallet</div>
-        </main>
-        )
-    }
+    },[isConnected])
 
     return (
         <main className='flex flex-col items-center p-12 border border-blue-500 rounded-lg mt-2'>
-            {!connected && (<div>Please connect to Sepolia</div>)}
-            {connected && (<div>
+            {!isConnected && (<div>Please connect to Sepolia</div>)}
+            {isConnected && (<div>
                 {!isReady && <>Loading...</>}
                 {isReady && 
                 (<div className="m-2 relative flex place-items-center flex-col">

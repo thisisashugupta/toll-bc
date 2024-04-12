@@ -21,7 +21,7 @@ const PayTollTax : React.FC = () => {
     const [successMessage, setSuccessMessage] = useState<string>("");
 
     useEffect(() => {
-        setArgs([address, tollId, tollName, vehnum, vehtype, vehmodel]);
+        setArgs([address as string, tollId, tollName, vehnum, vehtype, vehmodel]);
     }, [address, tollId, tollName, vehnum, vehtype, vehmodel]);
 
     const { config, isError, error } = usePrepareContractWrite({
